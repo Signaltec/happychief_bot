@@ -4,8 +4,6 @@
 
 'use strict';
 
-const TOKEN = '';
-
 global.ROOT_DIR = require('path').resolve(__dirname);
 
 var TelegramBot = require('node-telegram-bot-api'),
@@ -15,7 +13,7 @@ var TelegramBot = require('node-telegram-bot-api'),
 	users = require('./src/users.js'),
 	config = require('./config.json');
 
-var bot = new TelegramBot(TOKEN, {polling: true}),
+var bot = new TelegramBot(config.token, {polling: true}),
 	replyMsgs = [];
 
 console.log(Colors.yellow.underline('Бот запущен'));
@@ -109,10 +107,10 @@ bot.onText(/\/reg(?:@happychief_bot)?(.*)/, (msg, match) => {
 	}
 });
 
-bot.onText(/\/help/, (msg) => {
+bot.onText(/\/help/, (msg, match) => {
 	let message = `
 	*/help* - Выводит вывод вывода
-	*/reg* _Имя, которое будет выводится у в письме_ - Регистрация в боте
+	*/reg* _Имя, которое будет выводится у Андрея_ - Регистрация в боте
 	*/xyi* _Сообщение_ - Сообщение, которые будет в теле письма
 	`;
 
