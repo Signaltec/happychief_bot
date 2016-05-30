@@ -48,6 +48,12 @@ function sendMail(msg) {
 		.catch(e => bot.sendMessage(msg.chat.id, e.message));
 }
 
+/**
+ * Обработчки ответов на команды боту.
+ * @param msg
+ * @param replyText
+ * @param callback
+ */
 function waitForReply(msg, replyText, callback) {
 	let sendConfig = {
 		reply_to_message_id: msg.id,
@@ -66,6 +72,10 @@ function waitForReply(msg, replyText, callback) {
 		.catch(e => console.error(e));
 }
 
+/**
+ * Листенер на все сообщения, который проверяет стоит ли выполнить
+ * callback на какое-нить из сообщений.
+ */
 bot.on('message', msg => {
 	if (!msg.reply_to_message || !replyMsgs.length) {
 		return;
@@ -80,6 +90,9 @@ bot.on('message', msg => {
 	});
 });
 
+/**
+ * Команда отправки сообщения на мыло /xyi
+ */
 bot.onText(/\/xyi(?:@happychief_bot)?(.*)/, (msg, match) => {
 	let body = match[1].trim();
 	msg.text = body;
@@ -91,6 +104,9 @@ bot.onText(/\/xyi(?:@happychief_bot)?(.*)/, (msg, match) => {
 	}
 });
 
+/**
+ * Команда регистрации /reg
+ */
 bot.onText(/\/reg(?:@happychief_bot)?(.*)/, (msg, match) => {
 	let name = match[1].trim(),
 		callback = (replyMsg) => {
@@ -107,6 +123,9 @@ bot.onText(/\/reg(?:@happychief_bot)?(.*)/, (msg, match) => {
 	}
 });
 
+/**
+ * Команда помощи /help
+ */
 bot.onText(/\/help/, (msg, match) => {
 	let message = `
 	*/help* - Выводит вывод вывода

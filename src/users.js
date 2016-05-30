@@ -10,11 +10,20 @@ var db = new sqlite.Database(
 	}
 );
 
-class UsersError extends Error {
+class UsersError extends Error {}
 
-}
-
+/**
+ * Класс для работы с пользователями в бд.
+ * @class User
+ */
 class User {
+	/**
+	 * Вставка пользователя в бд.
+	 * @param id
+	 * @param name
+	 * @returns {Promise}
+	 * @private
+	 */
 	_insert(id, name) {
 		let self = this;
 
@@ -38,6 +47,12 @@ class User {
 		});
 	}
 
+	/**
+	 * Регистрация пользователя
+	 * @param {number}	id		id пользователя в телеграфе
+	 * @param {string	}name	имя, которое выбирает пользователь
+	 * @returns {Promise.<TResult>}
+	 */
 	reg(id, name) {
 		return this.get(id)
 			.then((user) => {
@@ -49,6 +64,11 @@ class User {
 			})
 	}
 
+	/**
+	 * Получение зарегистрированного пользователя.
+	 * @param id
+	 * @returns {Promise}
+	 */
 	get(id) {
 		return new Promise((resolve, reject) => {
 				db.serialize(() => {
