@@ -8,7 +8,6 @@
     "emailjs": "^1.0.4",
     "node-telegram-bot-api": "*",
     "nodemailer": "^2.4.2",
-    "sqlite3": "^3.1.4",
-    "svalko-api": "melphis/svalko-api"
+    "sqlite3": "^3.1.4"
   }
 }
