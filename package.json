@@ -1,0 +1,14 @@
+{
+  "name": "happychief",
+  "version": "0.0.1",
+  "description": "Bot for mezzo group",
+  "main": "app.js",
+  "dependencies": {
+    "colors": "*",
+    "emailjs": "^1.0.4",
+    "node-telegram-bot-api": "*",
+    "nodemailer": "^2.4.2",
+    "sqlite3": "^3.1.4",
+    "svalko-api": "melphis/svalko-api"
+  }
+}
