@@ -18,6 +18,13 @@ var bot = new TelegramBot(config.token, {polling: true}),
 
 console.log(Colors.yellow.underline('Бот запущен'));
 
+function sendMessage(id, text, params) {
+	!params && (params = {});
+	params.disable_notification = true;
+
+	return bot.sendMessage(id, text, params);
+}
+
 /**
  * Отправка сообщения на мыло
  * @param msg
@@ -31,7 +38,7 @@ function sendMail(msg) {
 	users.get(msg.from.id)
 		.then(user => {
 			if (!user) {
-				bot.sendMessage(msg.chat.id, 'Нужно зарегистрироваться для отправки - /reg');
+				sendMessage(msg.chat.id, 'Нужно зарегистрироваться для отправки - /reg');
 				return;
 			}
 
@@ -43,9 +50,9 @@ function sendMail(msg) {
 				// html: "<b>Hello world ✔</b>" // html body
 			}, console.error);
 
-			bot.sendMessage(msg.chat.id, config.mail.afterSendMessage);
+			sendMessage(msg.chat.id, config.mail.afterSendMessage);
 		})
-		.catch(e => bot.sendMessage(msg.chat.id, e.message));
+		.catch(e => sendMessage(msg.chat.id, e.message));
 }
 
 /**
@@ -56,13 +63,14 @@ function sendMail(msg) {
  */
 function waitForReply(msg, replyText, callback) {
 	let sendConfig = {
-		reply_to_message_id: msg.id,
+		reply_to_message_id: msg.message_id,
 		reply_markup: {
-			force_reply: true
+			force_reply: true,
+			selective: true
 		}
 	};
 
-	bot.sendMessage(msg.chat.id, replyText, sendConfig)
+	sendMessage(msg.chat.id, replyText, sendConfig)
 		.then(function(sendedMsg) {
 			replyMsgs.push({
 				sendedMsg: sendedMsg,
@@ -111,8 +119,8 @@ bot.onText(/\/reg(?:@happychief_bot)?(.*)/, (msg, match) => {
 	let name = match[1].trim(),
 		callback = (replyMsg) => {
 			users.reg(replyMsg.from.id, replyMsg.text)
-				.then(user => bot.sendMessage(replyMsg.chat.id, 'Готово!'))
-				.catch(e => bot.sendMessage(replyMsg.chat.id, e.message));
+				.then(user => sendMessage(replyMsg.chat.id, 'Готово!'))
+				.catch(e => sendMessage(replyMsg.chat.id, e.message));
 		};
 
 	if (name) {
@@ -133,5 +141,5 @@ bot.onText(/\/help/, (msg, match) => {
 	*/xyi* _Сообщение_ - Сообщение, которые будет в теле письма
 	`;
 
-	bot.sendMessage(msg.chat.id, message, {parse_mode: 'Markdown'});
+	sendMessage(msg.chat.id, message, {parse_mode: 'Markdown'});
 });
